@@ -1,0 +1,62 @@
+{% extends 'groups/group_base.html' %}
+
+{% block pregroup %}
+<div class="col-md-4">
+    <div class="card">
+        <div class="card-body">
+            {% if user.is_authenticated %}
+                <h2>
+                    <a href="{% url 'posts:for_user' username=user.username %}">
+                        @{{ user.username }}
+                    </a>
+                </h2>
+            {% endif %}
+            <h2>Groups</h2>
+            <p>Welcome to the Groups page!</p>
+             {% if user.is_authenticated %}
+                <a class="btn btn-warning" href="{% url 'groups:create' %}">
+                    <i class="material-icons btn-icon">
+                        control_point
+                    </i>
+                    Create New Group     
+                </a>
+            {% endif %}
+        </div>        
+    </div>  
+</div>
+{% endblock %}
+
+{% block group_content %}
+<div class="col-md-8">
+    <div class="list-group">
+        {% for group in object_list %}
+            <a class="group-link" href="{% url 'groups:single' slug=group.slug %}">
+                <div class="card group-list-item">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ group.name }}</h3>
+                        <h6 class="card-text text-muted">{{ group.description_html|safe }}</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span class="badge badge-primary">{{ group.members.count }}</span>
+                                members
+                            </div>
+                            <div class="col-md-4">
+                                <span class="badge badge-primary">{{ group.posts.count }}</span>
+                                posts
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- <a class="list-group-item" href="{% url 'groups:single' slug=group.slug %}">
+                <h3 class="title list-group-item-heading">{{ group.name }}</h3>
+                <div class="list-group-item-text container-fluid">
+                    {{ group.description_html|safe }}
+                    
+                </div>
+            </a> -->
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
